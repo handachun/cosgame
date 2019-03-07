@@ -45,14 +45,14 @@ function create()
   /*
    * START animations HERE
    */
-  this.anims.create({
+  anims.create({
     key: "test",
     frames: this.anims.generateFrameNumbers('student', {
       start: 0,
-      end: 3,
+      end: 15,
       first: 0
     }),
-    frameRate: 20,
+    frameRate: 7,
     repeat: -1
   });
 
