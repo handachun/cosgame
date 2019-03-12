@@ -65,6 +65,7 @@ function create()
   topLayer.setDepth(10);
   topTopLayer.setDepth(20);
 
+  // Set spawn point
   const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
 
   player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, 'student').setSize(6,8).setOffset(5,8);
@@ -126,6 +127,12 @@ function create()
   const camera = this.cameras.main;
   camera.startFollow(player);
   camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+  // Set bounds of the world
+  this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+  // Collide with the boundaries of the world
+  player.setCollideWorldBounds(true);
 
   // Create the cursors
   cursors = this.input.keyboard.createCursorKeys();
