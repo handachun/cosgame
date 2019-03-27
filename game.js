@@ -27,6 +27,28 @@ const game = new Phaser.Game(config);
 let player;
 let cursors;
 
+// main map
+let mainMap;
+
+// layers for the main map
+let groundLayer;
+let midLayer;
+let topLayer;
+let topTopLayer;
+
+// keep track of the spawnpoint in the main map
+let spawnPoint;
+
+// location text
+let locationText;
+
+// location objects
+let pG;
+let cG;
+let bG;
+let sG;
+let ptonG;
+
 function preload()
 {
   // Load the tiles
@@ -43,10 +65,31 @@ function preload()
   });
 }
 
+function handlePG() {
+  locationText.setText("Prospect Garden");
+}
+
+function handleCG() {
+  locationText.setText("Cannon Green");
+}
+
+function handleBG() {
+  locationText.setText("Blair Arch");
+}
+
+function handleSG() {
+  locationText.setText("The Slums");
+}
+
+function handlePtonG() {
+  locationText.setText("Princeton");
+}
+
 function create()
 {
   // Make the map
-  const map = this.make.tilemap({ key: "map" });
+  mainMap = this.make.tilemap({ key: "map" });
+  const map = mainMap;
 
   // Tilesets
   const tileset1 = map.addTilesetImage("basics", "basics_tiles");
@@ -55,10 +98,10 @@ function create()
   const tilesets = [tileset1, tileset2, tileset3];
 
   // Layers
-  const groundLayer = map.createStaticLayer("Ground Layer", tilesets, 0, 0);
-  const midLayer = map.createStaticLayer("Mid Layer", tilesets, 0, 0);
-  const topLayer = map.createStaticLayer("Top Layer", tilesets, 0, 0);
-  const topTopLayer = map.createStaticLayer("Top Top Layer", tilesets, 0, 0);
+  groundLayer = map.createStaticLayer("Ground Layer", tilesets, 0, 0);
+  midLayer = map.createStaticLayer("Mid Layer", tilesets, 0, 0);
+  topLayer = map.createStaticLayer("Top Layer", tilesets, 0, 0);
+  topTopLayer = map.createStaticLayer("Top Top Layer", tilesets, 0, 0);
 
   midLayer.setCollisionByProperty({ collide: true });
 
@@ -66,14 +109,16 @@ function create()
   topTopLayer.setDepth(20);
 
   // Set spawn point
-  const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+  spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
 
+  // create the player
   player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, 'student').setSize(6,8).setOffset(5,8);
+
+  // add collision with the coolision set objects from the mid layer
+  this.physics.add.collider(player, midLayer);
 
   // create var for anims to make calling easier
   const anims = this.anims;
-
-  this.physics.add.collider(player, midLayer);
 
   /*
    * START animations defs HERE
@@ -137,7 +182,44 @@ function create()
   // Create the cursors
   cursors = this.input.keyboard.createCursorKeys();
 
-  player.anims.play("walk-right", true);
+  locationText = this.add
+  .text(16, 16, "Princeton", {
+    font: "18px monospace",
+    fill: "#000000",
+    padding: { x: 5, y: 5 }
+  })
+  .setScrollFactor(0)
+  .setDepth(30);
+
+  // get the objects from the main map for labeling locations
+  const p = map.findObject("Objects", obj => obj.name === "Prospect Garden");
+  pG = this.add.zone(p.x, p.y).setSize(p.width, p.height);
+  this.physics.world.enable(pG, 1);
+  this.physics.add.overlap(player, pG, handlePG);
+
+  const c = map.findObject("Objects", obj => obj.name === "Cannon Green");
+  cG = this.add.zone(c.x, c.y).setSize(c.width, c.height);
+  this.physics.world.enable(cG, 1);
+  this.physics.add.overlap(player, cG, handleCG);
+
+  const b = map.findObject("Objects", obj => obj.name === "Blair Arch");
+  bG = this.add.zone(b.x, b.y).setSize(b.width, b.height);
+  this.physics.world.enable(bG, 1);
+  this.physics.add.overlap(player, bG, handleBG);
+
+  const s = map.findObject("Objects", obj => obj.name === "The Slums");
+  sG = this.add.zone(s.x, s.y).setSize(s.width, s.height);
+  this.physics.world.enable(sG, 1);
+  this.physics.add.overlap(player, sG, handleSG);
+
+  // add all boundaries to return to princeton
+  const pton = map.filterObjects("Objects", obj => obj.name === "pton");
+  let i;
+  for (i = 0; i < pton.length; i++) {
+    ptonG = this.add.zone(pton[i].x, pton[i].y).setSize(pton[i].width, pton[i].height);
+    this.physics.world.enable(ptonG, 1);
+    this.physics.add.overlap(player, ptonG, handlePtonG);
+  }
 }
 
 function update() 
