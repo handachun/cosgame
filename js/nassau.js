@@ -1,71 +1,57 @@
-/*
- * Author: Handa
- */
-
-import NassauScene from '/js/nassau.js';
-
-// keep track of the spawnpoint in the main this.Map
-let spawnPoint;
-
-class MainScene extends Phaser.Scene {
+export default class NassauScene extends Phaser.Scene {
   constructor ()
   {
-    super({key: 'Main', active: true});
-    Phaser.Scene.call(this, 'MainScene');
+    super({key: 'Nassau'});
+    Phaser.Scene.call(this, 'NassauScene');
   }
 
-  SwitchToNassau(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
+  SwitchToMain(p, ex)
+  {
     p.scene.input.stopPropagation();
-    p.scene.scene.start("NassauScene");
+    p.scene.scene.start("MainScene");
   }
 
   preload()
   {
     // Load the tiles
-    this.load.image("basics_tiles", "assets/basics.png");
-    this.load.image("statics_tiles", "assets/statics.png");
-    this.load.image("classic_tiles", "assets/ClassicRPG_Sheet.png");
+//    this.load.image("basics_tiles", "assets/basics.png");
+//    this.load.image("statics_tiles", "assets/statics.png");
+    this.load.image("indoor_tiles", "assets/indoor.png");
 
-    this.load.tilemapTiledJSON("map", "assets/princeton_map.json");
+    this.load.tilemapTiledJSON("nassaumap", "assets/nassau.json");
 
-    // Load the player sprite
-    this.load.spritesheet('student', 'assets/student.png', {
+    // Load the this.Player sprite
+/*    this.load.spritesheet('student', 'assets/student.png', {
       frameWidth: 16,
       frameHeight: 16
-    });
+    }); */
   }
 
   create()
   {
-    // Make the map
-    this.Map = this.make.tilemap({ key: "map" });
+    // Make the this.Map
+    this.Map = this.make.tilemap({ key: "nassaumap" });
 
     // Tilesets
     const tileset1 = this.Map.addTilesetImage("basics", "basics_tiles");
     const tileset2 = this.Map.addTilesetImage("statics", "statics_tiles");
-    const tileset3 = this.Map.addTilesetImage("ClassicRPG_Sheet", "classic_tiles");
+    const tileset3 = this.Map.addTilesetImage("indoor", "indoor_tiles");
     const tilesets = [tileset1, tileset2, tileset3];
 
     // Layers
     this.GroundLayer = this.Map.createStaticLayer("Ground Layer", tilesets, 0, 0);
     this.MidLayer = this.Map.createStaticLayer("Mid Layer", tilesets, 0, 0);
     this.TopLayer = this.Map.createStaticLayer("Top Layer", tilesets, 0, 0);
-    this.TopTopLayer = this.Map.createStaticLayer("Top Top Layer", tilesets, 0, 0);
 
     this.MidLayer.setCollisionByProperty({ collide: true });
 
     this.TopLayer.setDepth(10);
-    this.TopTopLayer.setDepth(20);
 
     // Set spawn point
-    if (spawnPoint == null) {
-      spawnPoint = this.Map.findObject("Objects", obj => obj.name === "Spawn Point");
-    }
+    this.SpawnPoint = this.Map.findObject("Objects", obj => obj.name === "Spawn Point");
 
     // create the this.Player
-    this.Player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, 'student').setSize(6,8).setOffset(5,8);
+    this.Player = this.physics.add.sprite(this.SpawnPoint.x, this.SpawnPoint.y, 'student').setSize(6,8).setOffset(5,8);
 
     // add collision with the coolision set objects from the mid layer
     this.physics.add.collider(this.Player, this.MidLayer);
@@ -121,7 +107,7 @@ class MainScene extends Phaser.Scene {
      * END animations anims HERE
      */
 
-    // Make camera follow the player and set boundaries 
+    // Make camera follow the this.Player and set boundaries 
     const camera = this.cameras.main;
     camera.startFollow(this.Player);
     camera.setBounds(0, 0, this.Map.widthInPixels, this.Map.heightInPixels);
@@ -132,52 +118,23 @@ class MainScene extends Phaser.Scene {
     // Collide with the boundaries of the world
     this.Player.setCollideWorldBounds(true);
 
-    // Create the cursors
+    // Create the this.Cursors
     this.Cursors = this.input.keyboard.createCursorKeys();
 
     this.LocationText = this.add
-    .text(16, 16, "Princeton", {
+    .text(16, 16, "Nassau", {
       font: "18px monospace",
       fill: "#000000",
-      padding: { x: 5, y: 5 }
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#ffffff"
     })
     .setScrollFactor(0)
     .setDepth(30);
 
-    // get the objects from the main map for labeling locations
-    const p = this.Map.findObject("Objects", obj => obj.name === "Prospect Garden");
-    const pG = this.add.zone(p.x, p.y).setSize(p.width, p.height);
-    this.physics.world.enable(pG, 1);
-    this.physics.add.overlap(this.Player, pG, () => this.LocationText.setText("Prospect Garden"));
-
-    const c = this.Map.findObject("Objects", obj => obj.name === "Cannon Green");
-    const cG = this.add.zone(c.x, c.y).setSize(c.width, c.height);
-    this.physics.world.enable(cG, 1);
-    this.physics.add.overlap(this.Player, cG,  () => this.LocationText.setText("Cannon Green"));
-
-    const b = this.Map.findObject("Objects", obj => obj.name === "Blair Arch");
-    const bG = this.add.zone(b.x, b.y).setSize(b.width, b.height);
-    this.physics.world.enable(bG, 1);
-    this.physics.add.overlap(this.Player, bG, () => this.LocationText.setText("Blair Arch"));
-
-    const s = this.Map.findObject("Objects", obj => obj.name === "The Slums");
-    const sG = this.add.zone(s.x, s.y).setSize(s.width, s.height);
-    this.physics.world.enable(sG, 1);
-    this.physics.add.overlap(this.Player, sG, () => this.LocationText.setText("The Slums"));
-
-    // add all boundaries to return to princeton
-    const pton = this.Map.filterObjects("Objects", obj => obj.name === "pton");
-    let i;
-    for (i = 0; i < pton.length; i++) {
-      const ptonG = this.add.zone(pton[i].x, pton[i].y).setSize(pton[i].width, pton[i].height);
-      this.physics.world.enable(ptonG, 1);
-      this.physics.add.overlap(this.Player, ptonG, () => this.LocationText.setText("Princeton"));
-    }
-
-    // entering Nassau
-    const nassauG = this.Map.createFromObjects("Objects","Nassau Door", {key: "Nassau Door", alpha: 0})[0].setSize(30, 30);
-    this.physics.world.enable(nassauG, 1);
-    this.physics.add.overlap(this.Player, nassauG, this.SwitchToNassau);
+    const exit = this.Map.createFromObjects("Objects","Exit", {key: "Exit", alpha:0})[0].setSize(30, 10);
+    exit.setPosition(exit.x, exit.y + 10);
+    this.physics.world.enable(exit, 1);
+    this.physics.add.overlap(this.Player, exit, this.SwitchToMain);
   }
 
   update() 
@@ -202,7 +159,7 @@ class MainScene extends Phaser.Scene {
       this.Player.body.setVelocityY(speed);
     }
 
-    // Normalize and scale the velocity so that player can't move faster along a diagonal
+    // Normalize and scale the velocity so that this.Player can't move faster along a diagonal
     this.Player.body.velocity.normalize().scale(speed);
 
     // Update the animation last and give left/right animations precedence over up/down animations
@@ -225,21 +182,3 @@ class MainScene extends Phaser.Scene {
     }
   }
 }
-
-const config = {
-  type: Phaser.AUTO,
-  width: 400,
-  height: 300,
-  pixelArt: true,
-  parent: "game-container",
-  zoom: 2,
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 0 }
-    }
-  },
-  scene: [ MainScene, NassauScene ]
-};
-
-const game = new Phaser.Game(config);
