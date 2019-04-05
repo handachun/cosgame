@@ -2,14 +2,14 @@
  * Author: Handa
  */
 
-import NassauScene from 'js/nassau.js';
-import House1Scene from 'js/house1.js';
-import House2Scene from 'js/house2.js';
-import House3Scene from 'js/house3.js';
-import FirestoneScene from 'js/firestone.js';
-import ChancellorGreenScene from 'js/chancellorgreen.js';
-import DormScene from 'js/dorm.js';
-import McCoshScene from 'js/mccosh.js';
+import NassauScene from '/js/nassau.js';
+import House1Scene from '/js/house1.js';
+import House2Scene from '/js/house2.js';
+import House3Scene from '/js/house3.js';
+import FirestoneScene from '/js/firestone.js';
+import ChancellorGreenScene from '/js/chancellorgreen.js';
+import DormScene from '/js/dorm.js';
+import McCoshScene from '/js/mccosh.js';
 
 // keep track of the spawnpoint in the main this.Map
 let spawnPoint;
@@ -80,14 +80,14 @@ class MainScene extends Phaser.Scene {
   preload()
   {
     // Load the tiles
-    this.load.image("basics_tiles", "assets/basics.png");
-    this.load.image("statics_tiles", "assets/statics.png");
-    this.load.image("classic_tiles", "assets/ClassicRPG_Sheet.png");
+    this.load.image("basics_tiles", "/assets/basics.png");
+    this.load.image("statics_tiles", "/assets/statics.png");
+    this.load.image("classic_tiles", "/assets/ClassicRPG_Sheet.png");
 
-    this.load.tilemapTiledJSON("map", "assets/princeton_map.json");
+    this.load.tilemapTiledJSON("map", "/assets/princeton_map.json");
 
     // Load the player sprite
-    this.load.spritesheet('student', 'assets/student.png', {
+    this.load.spritesheet('student', '/assets/student.png', {
       frameWidth: 16,
       frameHeight: 16
     });
