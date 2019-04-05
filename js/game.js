@@ -2,14 +2,14 @@
  * Author: Handa
  */
 
-import NassauScene from '/js/nassau.js';
-import House1Scene from '/js/house1.js';
-import House2Scene from '/js/house2.js';
-import House3Scene from '/js/house3.js';
-import FirestoneScene from '/js/firestone.js';
-import ChancellorGreenScene from '/js/chancellorgreen.js';
-import DormScene from '/js/dorm.js';
-import McCoshScene from '/js/mccosh.js';
+import NassauScene from './nassau.js';
+import House1Scene from './house1.js';
+import House2Scene from './house2.js';
+import House3Scene from './house3.js';
+import FirestoneScene from './firestone.js';
+import ChancellorGreenScene from './chancellorgreen.js';
+import DormScene from './dorm.js';
+import McCoshScene from './mccosh.js';
 
 // keep track of the spawnpoint in the main this.Map
 let spawnPoint;
