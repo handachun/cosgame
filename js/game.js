@@ -3,6 +3,13 @@
  */
 
 import NassauScene from '/js/nassau.js';
+import House1Scene from '/js/house1.js';
+import House2Scene from '/js/house2.js';
+import House3Scene from '/js/house3.js';
+import FirestoneScene from '/js/firestone.js';
+import ChancellorGreenScene from '/js/chancellorgreen.js';
+import DormScene from '/js/dorm.js';
+import McCoshScene from '/js/mccosh.js';
 
 // keep track of the spawnpoint in the main this.Map
 let spawnPoint;
@@ -19,6 +26,55 @@ class MainScene extends Phaser.Scene {
     spawnPoint.y = p.y + 10;
     p.scene.input.stopPropagation();
     p.scene.scene.start("NassauScene");
+  }
+
+  SwitchToFirestone(p, nd) {
+    spawnPoint.x = p.x;
+    spawnPoint.y = p.y + 10;
+    p.scene.input.stopPropagation();
+    p.scene.scene.start("FirestoneScene");
+  }
+
+  SwitchToChancellorGreen(p, nd) {
+    spawnPoint.x = p.x;
+    spawnPoint.y = p.y + 10;
+    p.scene.input.stopPropagation();
+    p.scene.scene.start("ChancellorGreenScene");
+  }
+
+  SwitchToDorm(p, nd) {
+    spawnPoint.x = p.x;
+    spawnPoint.y = p.y + 10;
+    p.scene.input.stopPropagation();
+    p.scene.scene.start("DormScene");
+  }
+
+  SwitchToMcCosh(p, nd) {
+    spawnPoint.x = p.x;
+    spawnPoint.y = p.y + 10;
+    p.scene.input.stopPropagation();
+    p.scene.scene.start("McCoshScene");
+  }
+
+  SwitchToHouse1(p, nd) {
+    spawnPoint.x = p.x;
+    spawnPoint.y = p.y + 10;
+    p.scene.input.stopPropagation();
+    p.scene.scene.start("House1Scene");
+  }
+
+  SwitchToHouse2(p, nd) {
+    spawnPoint.x = p.x;
+    spawnPoint.y = p.y + 10;
+    p.scene.input.stopPropagation();
+    p.scene.scene.start("House2Scene");
+  }
+
+  SwitchToHouse3(p, nd) {
+    spawnPoint.x = p.x;
+    spawnPoint.y = p.y + 10;
+    p.scene.input.stopPropagation();
+    p.scene.scene.start("House3Scene");
   }
 
   preload()
@@ -178,6 +234,37 @@ class MainScene extends Phaser.Scene {
     const nassauG = this.Map.createFromObjects("Objects","Nassau Door", {key: "Nassau Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(nassauG, 1);
     this.physics.add.overlap(this.Player, nassauG, this.SwitchToNassau);
+
+    const firestoneG = this.Map.createFromObjects("Objects","Firestone Door", {key: "Firestone Door", alpha: 0})[0].setSize(30, 30);
+    this.physics.world.enable(firestoneG, 1);
+    this.physics.add.overlap(this.Player, firestoneG, this.SwitchToFirestone);
+
+    const chancellorG = this.Map.createFromObjects("Objects","East Pyne Door", {key: "East Pyne Door", alpha: 0})[0].setSize(30, 30);
+    this.physics.world.enable(chancellorG, 1);
+    this.physics.add.overlap(this.Player, chancellorG, this.SwitchToChancellorGreen);
+
+    const dormG = this.Map.createFromObjects("Objects","Dorm Door", {key: "Dorm Door", alpha: 0})[0].setSize(30, 30);
+    this.physics.world.enable(dormG, 1);
+    this.physics.add.overlap(this.Player, dormG, this.SwitchToDorm);
+
+    const mccoshG = this.Map.createFromObjects("Objects","McCosh Door", {key: "McCosh Door", alpha: 0})[0].setSize(30, 30);
+    this.physics.world.enable(mccoshG, 1);
+    this.physics.add.overlap(this.Player, mccoshG, this.SwitchToMcCosh);
+
+    // entering House 1
+    const house1G = this.Map.createFromObjects("Objects","House One Door", {key: "House One Door", alpha: 0})[0].setSize(30, 30);
+    this.physics.world.enable(house1G, 1);
+    this.physics.add.overlap(this.Player, house1G, this.SwitchToHouse1);
+
+    // entering House 2
+    const house2G = this.Map.createFromObjects("Objects","House Two Door", {key: "House Two Door", alpha: 0})[0].setSize(30, 30);
+    this.physics.world.enable(house2G, 1);
+    this.physics.add.overlap(this.Player, house2G, this.SwitchToHouse2);
+
+    // entering House 3
+    const house3G = this.Map.createFromObjects("Objects","House Four Door", {key: "House Four Door", alpha: 0})[0].setSize(30, 30);
+    this.physics.world.enable(house3G, 1);
+    this.physics.add.overlap(this.Player, house3G, this.SwitchToHouse3);
   }
 
   update() 
@@ -239,7 +326,7 @@ const config = {
       gravity: { y: 0 }
     }
   },
-  scene: [ MainScene, NassauScene ]
+  scene: [ MainScene, NassauScene, House1Scene, House2Scene, House3Scene, FirestoneScene, ChancellorGreenScene, DormScene, McCoshScene ]
 };
 
 const game = new Phaser.Game(config);
