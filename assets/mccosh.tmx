@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="29" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="31" nextobjectid="5">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="29" height="19" tilewidth="16" tileheight="16" infinite="0" nextlayerid="31" nextobjectid="6">
  <tileset firstgid="1" name="indoor" tilewidth="16" tileheight="16" tilecount="77" columns="7">
   <image source="indoor.png" width="112" height="191"/>
   <tile id="0">
@@ -10300,5 +10300,8 @@
    <point/>
   </object>
   <object id="2" name="Exit" x="270.651" y="209.432" width="35.7143" height="13.1868"/>
+  <object id="5" name="Opponent" x="160.114" y="174.951">
+   <point/>
+  </object>
  </objectgroup>
 </map>

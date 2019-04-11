@@ -54,6 +54,18 @@
                  "width":35.478,
                  "x":304.008,
                  "y":255.228
+                }, 
+                {
+                 "height":0,
+                 "id":3,
+                 "name":"Opponent",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":256.276453876036,
+                 "y":213.370441236157
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -62,7 +74,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":3,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.2",

@@ -21,60 +21,74 @@ class MainScene extends Phaser.Scene {
     Phaser.Scene.call(this, 'MainScene');
   }
 
-  SwitchToNassau(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("NassauScene");
+  init (data) {
+    if (data.score == undefined) {
+      this.Score = 0;
+    } else {
+      this.Score = data.score;
+    }
+
+    if (data.completed == undefined) {
+      this.Completed = [];
+    } else {
+      this.Completed = data.completed;
+    }
   }
 
-  SwitchToFirestone(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("FirestoneScene");
+  SwitchToNassau() {
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("NassauScene", {score: this.Score, completed: this.Completed});
   }
 
-  SwitchToChancellorGreen(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("ChancellorGreenScene");
+  SwitchToFirestone() {
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("FirestoneScene");
   }
 
-  SwitchToDorm(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("DormScene");
+  SwitchToChancellorGreen() {
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("ChancellorGreenScene", {score: this.Score});
   }
 
-  SwitchToMcCosh(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("McCoshScene");
+  SwitchToDorm() {
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("DormScene", {score: this.Score});
   }
 
-  SwitchToHouse1(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("House1Scene");
+  SwitchToMcCosh() {
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("McCoshScene", {score: this.Score});
+  }
+
+  SwitchToHouse1() {
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("House1Scene", {score: this.Score});
   }
 
   SwitchToHouse2(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("House2Scene");
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("House2Scene", {score: this.Score});
   }
 
   SwitchToHouse3(p, nd) {
-    spawnPoint.x = p.x;
-    spawnPoint.y = p.y + 10;
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("House3Scene");
+    spawnPoint.x = this.Player.x;
+    spawnPoint.y = this.Player.y + 10;
+    this.input.stopPropagation();
+    this.scene.start("House3Scene", {score: this.Score});
   }
 
   preload()
@@ -233,42 +247,53 @@ class MainScene extends Phaser.Scene {
     // entering Nassau
     const nassauG = this.Map.createFromObjects("Objects","Nassau Door", {key: "Nassau Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(nassauG, 1);
-    this.physics.add.overlap(this.Player, nassauG, this.SwitchToNassau);
+    this.physics.add.overlap(this.Player, nassauG, () => this.SwitchToNassau());
 
     const firestoneG = this.Map.createFromObjects("Objects","Firestone Door", {key: "Firestone Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(firestoneG, 1);
-    this.physics.add.overlap(this.Player, firestoneG, this.SwitchToFirestone);
+    this.physics.add.overlap(this.Player, firestoneG, () => this.SwitchToFirestone());
 
     const chancellorG = this.Map.createFromObjects("Objects","East Pyne Door", {key: "East Pyne Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(chancellorG, 1);
-    this.physics.add.overlap(this.Player, chancellorG, this.SwitchToChancellorGreen);
+    this.physics.add.overlap(this.Player, chancellorG, () => this.SwitchToChancellorGreen());
 
     const dormG = this.Map.createFromObjects("Objects","Dorm Door", {key: "Dorm Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(dormG, 1);
-    this.physics.add.overlap(this.Player, dormG, this.SwitchToDorm);
+    this.physics.add.overlap(this.Player, dormG, () => this.SwitchToDorm());
 
     const mccoshG = this.Map.createFromObjects("Objects","McCosh Door", {key: "McCosh Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(mccoshG, 1);
-    this.physics.add.overlap(this.Player, mccoshG, this.SwitchToMcCosh);
+    this.physics.add.overlap(this.Player, mccoshG, () => this.SwitchToMcCosh());
 
     // entering House 1
     const house1G = this.Map.createFromObjects("Objects","House One Door", {key: "House One Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(house1G, 1);
-    this.physics.add.overlap(this.Player, house1G, this.SwitchToHouse1);
+    this.physics.add.overlap(this.Player, house1G, () => this.SwitchToHouse1());
 
     // entering House 2
     const house2G = this.Map.createFromObjects("Objects","House Two Door", {key: "House Two Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(house2G, 1);
-    this.physics.add.overlap(this.Player, house2G, this.SwitchToHouse2);
+    this.physics.add.overlap(this.Player, house2G, () => this.SwitchToHouse2());
 
     // entering House 3
     const house3G = this.Map.createFromObjects("Objects","House Four Door", {key: "House Four Door", alpha: 0})[0].setSize(30, 30);
     this.physics.world.enable(house3G, 1);
-    this.physics.add.overlap(this.Player, house3G, this.SwitchToHouse3);
+    this.physics.add.overlap(this.Player, house3G, () => this.SwitchToHouse3());
+
+    this.ScoreText = this.add
+    .text(300, 16, "Score: " + this.Score, {
+      font: "14px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#ffffff"
+    })
+    .setScrollFactor(0)
+    .setDepth(30);
   }
 
   update() 
   {
+    this.ScoreText.setText("Score: " + this.Score);
     const speed = 100;
     const prevVelocity = this.Player.body.velocity.clone();
 

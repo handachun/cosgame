@@ -46,15 +46,15 @@
          "name":"Objects",
          "objects":[
                 {
-                 "height":18.2796790900782,
+                 "height":18.2797,
                  "id":7,
                  "name":"Exit",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":35.5438204529298,
-                 "x":223.418299989845,
-                 "y":643.850919061643
+                 "width":35.5438,
+                 "x":223.418,
+                 "y":643.851
                 }, 
                 {
                  "height":0,
@@ -65,8 +65,20 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":241.697979079923,
-                 "y":611.353711790393
+                 "x":241.698,
+                 "y":611.354
+                }, 
+                {
+                 "height":0,
+                 "id":9,
+                 "name":"Opponent",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":223.418299989845,
+                 "y":102.569310449883
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -75,7 +87,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":9,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.2",
