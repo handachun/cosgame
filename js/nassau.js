@@ -1,3 +1,5 @@
+import Grade from '/iwgame/js/grade.js';
+
 export default class NassauScene extends Phaser.Scene {
   constructor ()
   {
@@ -80,7 +82,7 @@ export default class NassauScene extends Phaser.Scene {
     .setInteractive()
     .on('pointerdown', () => this.HandleCleanUp(true));
 
-    this.ScoreText.setText("Score: " + this.Score);
+    this.ScoreText.setText("Grade: " + Grade(this.Score));
 
     this.Completed.push(this.SceneId);
   }
@@ -108,18 +110,19 @@ export default class NassauScene extends Phaser.Scene {
     }
 
     this.QuestionText = this.add
-    .text(50, 25, "Question 1", {
+    .text(50, 25, "What does this compute to and to what type? (!!!!true && !!!!false) != true", {
       font: "16px monospace",
       fill: "#000000",
       padding: { x: 5, y: 5 },
       backgroundColor: "#C8A090",
-      align:'center'
+      align: 'left',
+      wordWrap: { width: 300, useAdvancedWrap: true }
     })
     .setScrollFactor(0)
     .setDepth(40);
 
     this.A1 = this.add
-    .text(50, 160, "Answer 1", {
+    .text(50, 160, "true, integer", {
       font: "14px monospace",
       fill: "#000000",
       padding: { x: 5, y: 5 },
@@ -132,20 +135,7 @@ export default class NassauScene extends Phaser.Scene {
     .on('pointerdown', () => this.WrongAnswer());
 
     this.A2 = this.add
-    .text(50, 190, "Answer 2", {
-      font: "14px monospace",
-      fill: "#000000",
-      padding: { x: 5, y: 5 },
-      backgroundColor: "#C8A090",
-      align:'center'
-    })
-    .setScrollFactor(0)
-    .setDepth(50)
-    .setInteractive()
-    .on('pointerdown', () => this.WrongAnswer());
-
-    this.A3 = this.add
-    .text(50, 220, "Correct Answer", {
+    .text(50, 190, "true, boolean", {
       font: "14px monospace",
       fill: "#000000",
       padding: { x: 5, y: 5 },
@@ -157,8 +147,21 @@ export default class NassauScene extends Phaser.Scene {
     .setInteractive()
     .on('pointerdown', () => this.CorrectAnswer());
 
+    this.A3 = this.add
+    .text(50, 220, "false, boolean", {
+      font: "14px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#C8A090",
+      align:'center'
+    })
+    .setScrollFactor(0)
+    .setDepth(50)
+    .setInteractive()
+    .on('pointerdown', () => this.WrongAnswer());
+
     this.A4 = this.add
-    .text(50, 250, "Answer 4", {
+    .text(50, 250, "false, integer", {
       font: "14px monospace",
       fill: "#000000",
       padding: { x: 5, y: 5 },
@@ -177,7 +180,7 @@ export default class NassauScene extends Phaser.Scene {
 
     this.load.tilemapTiledJSON("nassaumap", "/iwgame/assets/nassau.json");
 
-    this.load.image("opponent", "/iwgame/assets/eisgruber.png");
+    this.load.image("eisgruber", "/iwgame/assets/eisgruber.png");
   }
 
   create()
@@ -207,10 +210,20 @@ export default class NassauScene extends Phaser.Scene {
     this.Player = this.physics.add.sprite(this.SpawnPoint.x, this.SpawnPoint.y, 'student').setSize(6,8).setOffset(5,8);
 
     this.OpponentPoint = this.Map.findObject("Objects", obj => obj.name === "Opponent");
-    this.Opponent = this.physics.add.sprite(this.OpponentPoint.x, this.OpponentPoint.y, 'opponent').setSize(16, 16).setOffset(0,0).setImmovable(true);
+    this.Opponent = this.physics.add.sprite(this.OpponentPoint.x, this.OpponentPoint.y, 'eisgruber').setSize(16, 16).setOffset(0,0).setImmovable(true);
     
     this.physics.add.overlap(this.Player, this.Opponent, () => this.HandleQuestion(), null, this);
     this.physics.add.collider(this.Player, this.Opponent, () => this.HandleQuestion(), () => this.QuestionOn = true );
+
+    this.ScoreText = this.add
+    .text(250, 16, "Grade: " + Grade(this.Score), {
+      font: "10px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#ffffff"
+    })
+    .setScrollFactor(0)
+    .setDepth(30);
 
     // add collision with the coolision set objects from the mid layer
     this.physics.add.collider(this.Player, this.MidLayer);
@@ -283,16 +296,6 @@ export default class NassauScene extends Phaser.Scene {
     this.LocationText = this.add
     .text(16, 16, "Nassau", {
       font: "18px monospace",
-      fill: "#000000",
-      padding: { x: 5, y: 5 },
-      backgroundColor: "#ffffff"
-    })
-    .setScrollFactor(0)
-    .setDepth(30);
-
-    this.ScoreText = this.add
-    .text(300, 16, "Score: " + this.Score, {
-      font: "14px monospace",
       fill: "#000000",
       padding: { x: 5, y: 5 },
       backgroundColor: "#ffffff"

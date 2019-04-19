@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="40" height="34" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="7">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="40" height="34" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="8">
  <tileset firstgid="1" name="statics" tilewidth="16" tileheight="16" tilecount="680" columns="20">
   <image source="statics.png" width="320" height="544"/>
   <tile id="0">
@@ -4925,6 +4925,9 @@
  <objectgroup id="9" name="Objects">
   <object id="1" name="Exit" x="544.582" y="287.944" width="47.3374" height="11.5981"/>
   <object id="6" name="Spawn Point" x="564.775" y="250.229">
+   <point/>
+  </object>
+  <object id="7" name="Opponent" x="256.077" y="106.39">
    <point/>
   </object>
  </objectgroup>

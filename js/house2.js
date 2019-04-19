@@ -1,14 +1,177 @@
+import Grade from '/iwgame/js/grade.js';
+
 export default class House2Scene extends Phaser.Scene {
   constructor ()
   {
     super({key: 'House2'});
     Phaser.Scene.call(this, 'House2Scene');
+
+    this.Score = 0;
   }
 
-  SwitchToMain(p, ex)
+  SwitchToMain()
   {
-    p.scene.input.stopPropagation();
-    p.scene.scene.start("MainScene");
+    this.input.stopPropagation();
+    this.scene.start("MainScene", {score: this.Score, completed: this.Completed});
+  }
+
+  init (data)
+  {
+    this.Score = data.score;
+    this.Completed = data.completed;
+    this.QuestionOn = false;
+
+    this.SceneId = "house2";
+  }
+
+  HandleCleanUp(Qo)
+  {
+    this.Result.destroy();
+    this.QuestionOn = Qo;
+  }
+
+  WrongAnswer() 
+  {
+    this.QuestionText.setVisible(false);
+    this.A1.setVisible(false);
+    this.A2.setVisible(false);
+    this.A3.setVisible(false);
+    this.A4.setVisible(false);
+    this.QuestionText.destroy();
+    this.A1.destroy();
+    this.A2.destroy();
+    this.A3.destroy();
+    this.A4.destroy();
+    this.Result = this.add
+    .text(50, 200, "Sorry, Try Again (click to close)", {
+      font: "16px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#AE0000",
+      align:'center'
+    })
+    .setScrollFactor(0)
+    .setDepth(50)
+    .setInteractive()
+    .on('pointerdown', () => this.HandleCleanUp(false));
+  }
+
+  CorrectAnswer() 
+  {
+    this.Score++;
+    this.QuestionText.setVisible(false);
+    this.A1.setVisible(false);
+    this.A2.setVisible(false);
+    this.A3.setVisible(false);
+    this.A4.setVisible(false);
+    this.QuestionText.destroy();
+    this.A1.destroy();
+    this.A2.destroy();
+    this.A3.destroy();
+    this.A4.destroy();
+    this.Result = this.add
+    .text(50, 200, "Good Job!! (click to close)", {
+      font: "16px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#007304",
+      align:'center'
+    })
+    .setScrollFactor(0)
+    .setDepth(50)
+    .setInteractive()
+    .on('pointerdown', () => this.HandleCleanUp(true));
+
+    this.ScoreText.setText("Grade: " + Grade(this.Score));
+
+    this.Completed.push(this.SceneId);
+  }
+
+  HandleQuestion()
+  {
+    let newx = this.Player.x + 7;
+    if ((this.Player.x - this.Opponent.x) < 0) {
+      newx = this.Player.x - 7;
+    }
+
+    let newy = this.Player.y + 7;
+    if ((this.Player.y - this.Opponent.y) < 0) {
+      newy = this.Player.y - 7;
+    }
+
+    this.Player.setPosition(newx, newy);
+
+    if (this.Completed.includes(this.SceneId)) {
+      return;
+    }
+
+    if (this.QuestionOn === true) {
+      return;
+    }
+
+    this.QuestionText = this.add
+    .text(50, 25, "What indicates that a function is part of the API?", {
+      font: "16px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#C8A090",
+      align: 'left',
+      wordWrap: { width: 300, useAdvancedWrap: true }
+    })
+    .setScrollFactor(0)
+    .setDepth(40);
+
+    this.A1 = this.add
+    .text(50, 160, "curly braces", {
+      font: "14px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#C8A090",
+      align:'center'
+    })
+    .setScrollFactor(0)
+    .setDepth(50)
+    .setInteractive()
+    .on('pointerdown', () => this.WrongAnswer());
+
+    this.A2 = this.add
+    .text(50, 190, "statement", {
+      font: "14px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#C8A090",
+      align:'center'
+    })
+    .setScrollFactor(0)
+    .setDepth(50)
+    .setInteractive()
+    .on('pointerdown', () => this.WrongAnswer());
+
+    this.A3 = this.add
+    .text(50, 220, "signature", {
+      font: "14px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#C8A090",
+      align:'center'
+    })
+    .setScrollFactor(0)
+    .setDepth(50)
+    .setInteractive()
+    .on('pointerdown', () => this.CorrectAnswer());
+
+    this.A4 = this.add
+    .text(50, 250, "default", {
+      font: "14px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#C8A090",
+      align:'center'
+    })
+    .setScrollFactor(0)
+    .setDepth(50)
+    .setInteractive()
+    .on('pointerdown', () => this.WrongAnswer());
   }
 
   preload()
@@ -21,6 +184,7 @@ export default class House2Scene extends Phaser.Scene {
 
     this.load.tilemapTiledJSON("house2map", "/iwgame/assets/house2.json");
 
+    this.load.image("zuckerberg", "/iwgame/assets/zuckerberg.png");
   }
 
   create()
@@ -47,6 +211,23 @@ export default class House2Scene extends Phaser.Scene {
 
     // create the this.Player
     this.Player = this.physics.add.sprite(this.SpawnPoint.x, this.SpawnPoint.y, 'student').setSize(6,8).setOffset(5,8);
+
+    this.OpponentPoint = this.Map.findObject("Objects", obj => obj.name === "Opponent");
+    this.Opponent = this.physics.add.sprite(this.OpponentPoint.x, this.OpponentPoint.y, 'zuckerberg').setSize(16, 16).setOffset(0,0).setImmovable(true);
+    
+    this.physics.add.overlap(this.Player, this.Opponent, () => this.HandleQuestion(), null, this);
+    this.physics.add.collider(this.Player, this.Opponent, () => this.HandleQuestion(), () => this.QuestionOn = true );
+
+    this.ScoreText = this.add
+    .text(250, 16, "Grade: " + Grade(this.Score), {
+      font: "10px monospace",
+      fill: "#000000",
+      padding: { x: 5, y: 5 },
+      backgroundColor: "#ffffff"
+    })
+    .setScrollFactor(0)
+    .setDepth(30);
+
 
     // add collision with the coolision set objects from the mid layer
     this.physics.add.collider(this.Player, this.MidLayer);
@@ -129,7 +310,7 @@ export default class House2Scene extends Phaser.Scene {
     const exit = this.Map.createFromObjects("Objects","Exit", {key: "Exit", alpha:0})[0].setSize(30, 10);
     exit.setPosition(exit.x, exit.y + 15);
     this.physics.world.enable(exit, 1);
-    this.physics.add.overlap(this.Player, exit, this.SwitchToMain);
+    this.physics.add.overlap(this.Player, exit, () => this.SwitchToMain());
   }
 
   update() 

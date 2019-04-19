@@ -11,6 +11,8 @@ import ChancellorGreenScene from '/iwgame/js/chancellorgreen.js';
 import DormScene from '/iwgame/js/dorm.js';
 import McCoshScene from '/iwgame/js/mccosh.js';
 
+import Grade from '/iwgame/js/grade.js';
+
 // keep track of the spawnpoint in the main this.Map
 let spawnPoint;
 
@@ -46,49 +48,49 @@ class MainScene extends Phaser.Scene {
     spawnPoint.x = this.Player.x;
     spawnPoint.y = this.Player.y + 10;
     this.input.stopPropagation();
-    this.scene.start("FirestoneScene");
+    this.scene.start("FirestoneScene", {score: this.Score, completed: this.Completed});
   }
 
   SwitchToChancellorGreen() {
     spawnPoint.x = this.Player.x;
     spawnPoint.y = this.Player.y + 10;
     this.input.stopPropagation();
-    this.scene.start("ChancellorGreenScene", {score: this.Score});
+    this.scene.start("ChancellorGreenScene",{score: this.Score, completed: this.Completed});
   }
 
   SwitchToDorm() {
     spawnPoint.x = this.Player.x;
     spawnPoint.y = this.Player.y + 10;
     this.input.stopPropagation();
-    this.scene.start("DormScene", {score: this.Score});
+    this.scene.start("DormScene", {score: this.Score, completed: this.Completed});
   }
 
   SwitchToMcCosh() {
     spawnPoint.x = this.Player.x;
     spawnPoint.y = this.Player.y + 10;
     this.input.stopPropagation();
-    this.scene.start("McCoshScene", {score: this.Score});
+    this.scene.start("McCoshScene", {score: this.Score, completed: this.Completed});
   }
 
   SwitchToHouse1() {
     spawnPoint.x = this.Player.x;
     spawnPoint.y = this.Player.y + 10;
     this.input.stopPropagation();
-    this.scene.start("House1Scene", {score: this.Score});
+    this.scene.start("House1Scene",{score: this.Score, completed: this.Completed});
   }
 
   SwitchToHouse2(p, nd) {
     spawnPoint.x = this.Player.x;
     spawnPoint.y = this.Player.y + 10;
     this.input.stopPropagation();
-    this.scene.start("House2Scene", {score: this.Score});
+    this.scene.start("House2Scene", {score: this.Score, completed: this.Completed});
   }
 
   SwitchToHouse3(p, nd) {
     spawnPoint.x = this.Player.x;
     spawnPoint.y = this.Player.y + 10;
     this.input.stopPropagation();
-    this.scene.start("House3Scene", {score: this.Score});
+    this.scene.start("House3Scene", {score: this.Score, completed: this.Completed});
   }
 
   preload()
@@ -281,8 +283,8 @@ class MainScene extends Phaser.Scene {
     this.physics.add.overlap(this.Player, house3G, () => this.SwitchToHouse3());
 
     this.ScoreText = this.add
-    .text(300, 16, "Score: " + this.Score, {
-      font: "14px monospace",
+    .text(250, 16, "Grade: " + Grade(this.Score), {
+      font: "10px monospace",
       fill: "#000000",
       padding: { x: 5, y: 5 },
       backgroundColor: "#ffffff"
@@ -293,7 +295,7 @@ class MainScene extends Phaser.Scene {
 
   update() 
   {
-    this.ScoreText.setText("Score: " + this.Score);
+    this.ScoreText.setText("Grade: " + Grade(this.Score));
     const speed = 100;
     const prevVelocity = this.Player.body.velocity.clone();
 

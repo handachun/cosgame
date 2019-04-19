@@ -52,9 +52,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":47.3374020764846,
-                 "x":544.582320835587,
-                 "y":287.943743747659
+                 "width":47.3374,
+                 "x":544.582,
+                 "y":287.944
                 }, 
                 {
                  "height":0,
@@ -67,6 +67,18 @@
                  "width":0,
                  "x":564.775,
                  "y":250.229
+                }, 
+                {
+                 "height":0,
+                 "id":7,
+                 "name":"Opponent",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":256.077194284654,
+                 "y":106.389558978165
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -75,7 +87,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":7,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.2",
